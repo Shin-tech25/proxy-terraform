@@ -12,6 +12,12 @@ resource "aws_instance" "terraform-ec2-01" {
     volume_size           = 8
     delete_on_termination = true
   }
+  user_data = <<EOF
+    #!/bin/bash
+    sudo yum update -y
+    sudo yum install -y squid
+    sudo systemctl enable --now squid
+  EOF
   tags = {
     "Name" = "terraform-ec2-01"
   }

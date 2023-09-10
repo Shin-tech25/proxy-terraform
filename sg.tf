@@ -15,6 +15,17 @@ resource "aws_security_group_rule" "inbound_ssh" {
   security_group_id = aws_security_group.test-sg.id
 }
 
+resource "aws_security_group_rule" "inbound_squid" {
+  type      = "ingress"
+  from_port = 8080
+  to_port   = 8080
+  protocol  = "tcp"
+  cidr_blocks = [
+    "0.0.0.0/0"
+  ]
+  security_group_id = aws_security_group.test-sg.id
+}
+
 resource "aws_security_group_rule" "outbound_all" {
   type      = "egress"
   from_port = 0
