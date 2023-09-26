@@ -9,11 +9,12 @@ resource "aws_instance" "terraform-ec2-01" {
   private_ip                  = "10.40.0.10"
   root_block_device {
     volume_type           = "gp2"
-    volume_size           = 8
+    volume_size           = 20
     delete_on_termination = true
   }
   user_data = <<EOF
     #!/bin/bash
+    sudo nmcli general hostname proxy
     sudo yum update -y
     sudo yum install -y squid
     sudo systemctl enable --now squid
