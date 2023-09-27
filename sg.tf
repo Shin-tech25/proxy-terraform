@@ -1,7 +1,7 @@
-resource "aws_security_group" "test-sg" {
-  name        = "test-sg"
-  vpc_id      = aws_vpc.test-vpc.id
-  description = "test sg"
+resource "aws_security_group" "proxy-sg" {
+  name        = "proxy-sg"
+  vpc_id      = aws_vpc.proxy-vpc.id
+  description = "Security group for proxy instance."
 }
 
 resource "aws_security_group_rule" "inbound_ssh" {
@@ -12,7 +12,7 @@ resource "aws_security_group_rule" "inbound_ssh" {
   cidr_blocks = [
     "0.0.0.0/0"
   ]
-  security_group_id = aws_security_group.test-sg.id
+  security_group_id = aws_security_group.proxy-sg.id
 }
 
 resource "aws_security_group_rule" "inbound_squid" {
@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "inbound_squid" {
   cidr_blocks = [
     "0.0.0.0/0"
   ]
-  security_group_id = aws_security_group.test-sg.id
+  security_group_id = aws_security_group.proxy-sg.id
 }
 
 resource "aws_security_group_rule" "outbound_all" {
@@ -34,5 +34,5 @@ resource "aws_security_group_rule" "outbound_all" {
   cidr_blocks = [
     "0.0.0.0/0"
   ]
-  security_group_id = aws_security_group.test-sg.id
+  security_group_id = aws_security_group.proxy-sg.id
 }

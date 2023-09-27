@@ -1,10 +1,11 @@
-resource "aws_instance" "terraform-ec2-01" {
-  ami                         = "ami-02892a4ea9bfa2192"
+resource "aws_instance" "proxy" {
+  # Amazon Linux 2023 AMI
+  ami                         = "ami-079cd5448deeace01"
   availability_zone           = "ap-northeast-1a"
   instance_type               = "t2.micro"
   key_name                    = "proxy"
-  subnet_id                   = aws_subnet.test-subnet-a.id
-  vpc_security_group_ids      = [aws_security_group.test-sg.id]
+  subnet_id                   = aws_subnet.proxy-subnet-a.id
+  vpc_security_group_ids      = [aws_security_group.proxy-sg.id]
   associate_public_ip_address = false
   private_ip                  = "10.40.0.10"
   root_block_device {
@@ -20,19 +21,19 @@ resource "aws_instance" "terraform-ec2-01" {
     sudo systemctl enable --now squid
   EOF
   tags = {
-    "Name" = "terraform-ec2-01"
+    "Name" = "proxy"
   }
   lifecycle {
     ignore_changes = all
   }
 }
 
-resource "aws_eip" "ec2-eip" {
-  instance = aws_instance.terraform-ec2-01.id
+resource "aws_eip" "proxy-eip" {
+  instance = aws_instance.proxy.id
   vpc      = true
 }
 
 output "elastic_ip" {
   description = "Elastic IP Address of EC2 Instance."
-  value = aws_eip.ec2-eip.public_ip
+  value = aws_eip.proxy-eip.public_ip
 }
